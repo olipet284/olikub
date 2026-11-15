@@ -11,8 +11,8 @@ else
   languages=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --height 10 --header "Select programming languages")
 
   if [[ "$languages" == *"Python"* ]]; then
-    AVAILABLE_PYTHON_VERSIONS=("3.10" "3.11" "3.12" "3.13" "3.14")
-    SELECTED_PYTHON_VERSIONS="3.10","3.11","3.12","3.13","3.14"
+    AVAILABLE_PYTHON_VERSIONS=("3.10" "3.11" "3.12" "3.13" "3.14" "3.15")
+    SELECTED_PYTHON_VERSIONS="3.10","3.11","3.12","3.13","3.14","3.15"
     python_versions=$(gum choose "${AVAILABLE_PYTHON_VERSIONS[@]}" --no-limit --selected "$SELECTED_PYTHON_VERSIONS" --height 7 --header "Select Python versions")
   fi
 
@@ -41,12 +41,8 @@ if [[ -n "$languages" ]]; then
     Python)
       sudo add-apt-repository ppa:deadsnakes/ppa -y && sudo apt update
       for version in $python_versions; do
-        sudo apt -y install python${version}-venv --no-install-recommends
-        python${version} -m ensurepip --upgrade
+        sudo apt -y install python${version}-full --no-install-recommends
       done
-
-      gum confirm "Do you want to install uv for Python package management?" && \
-      source ~/.local/share/omakub/install/terminal/optional/uv.sh
 
       gum confirm "Do you want to install venv-cli for Python virtual environment management?" && \
       source ~/.local/share/omakub/install/terminal/optional/venv-cli.sh
