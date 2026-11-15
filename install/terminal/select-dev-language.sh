@@ -42,11 +42,7 @@ if [[ -n "$languages" ]]; then
       sudo add-apt-repository ppa:deadsnakes/ppa -y && sudo apt update
       for version in $python_versions; do
         sudo apt -y install python${version}-full --no-install-recommends
-        python${version} -m ensurepip --upgrade
       done
-
-      gum confirm "Do you want to install uv for Python package management?" && \
-      source ~/.local/share/omakub/install/terminal/optional/uv.sh
 
       gum confirm "Do you want to install venv-cli for Python virtual environment management?" && \
       source ~/.local/share/omakub/install/terminal/optional/venv-cli.sh
