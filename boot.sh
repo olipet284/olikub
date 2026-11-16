@@ -14,7 +14,7 @@ ascii_art=' ▄██████▄    ▄▄▄▄███▄▄▄▄      �
 '
 
 echo -e "$ascii_art"
-echo "=> Olikub is for fresh Ubuntu 24.04+ installations only!"
+echo "=> Olikub is for fresh Ubuntu 26.04+ installations only!"
 echo -e "\nBegin installation (or abort with ctrl+c)..."
 
 sudo apt-get update >/dev/null
