@@ -7,7 +7,7 @@ fi
 
 # Only attempt to set configuration if fastfetch is not already set
 if [ ! -f "$HOME/.config/fastfetch/config.jsonc" ]; then
-  # Use Omakub fastfetch config
+  # Use Olikub fastfetch config
   mkdir -p ~/.config/fastfetch
-  cp "$OMAKUB_PATH/configs/fastfetch.jsonc" ~/.config/fastfetch/config.jsonc
+  cp "$OLIKUB_PATH/configs/fastfetch.jsonc" ~/.config/fastfetch/config.jsonc
 fi

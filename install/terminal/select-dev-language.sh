@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Install default programming languages
-if [[ -v OMAKUB_FIRST_RUN_LANGUAGES ]]; then
-  languages=$OMAKUB_FIRST_RUN_LANGUAGES
-  if [[ "$OMAKUB_FIRST_RUN_LANGUAGES" == *"Python"* ]]; then
-    python_versions=$OMAKUB_FIRST_RUN_PYTHON_VERSIONS
+if [[ -v OLIKUB_FIRST_RUN_LANGUAGES ]]; then
+  languages=$OLIKUB_FIRST_RUN_LANGUAGES
+  if [[ "$OLIKUB_FIRST_RUN_LANGUAGES" == *"Python"* ]]; then
+    python_versions=$OLIKUB_FIRST_RUN_PYTHON_VERSIONS
   fi
 else
   AVAILABLE_LANGUAGES=("Ruby on Rails" "Node.js" "Go" "PHP" "Python" "Elixir" "Rust" "Java")
@@ -45,7 +45,7 @@ if [[ -n "$languages" ]]; then
       done
 
       gum confirm "Do you want to install venv-cli for Python virtual environment management?" && \
-      source ~/.local/share/omakub/install/terminal/optional/venv-cli.sh
+      source ~/.local/share/olikub/install/terminal/optional/venv-cli.sh
       ;;
     Elixir)
       mise use --global erlang@latest

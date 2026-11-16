@@ -14,20 +14,15 @@ ascii_art=' ▄██████▄    ▄▄▄▄███▄▄▄▄      �
 '
 
 echo -e "$ascii_art"
-echo "=> Omakub is for fresh Ubuntu 24.04+ installations only!"
+echo "=> Olikub is for fresh Ubuntu 24.04+ installations only!"
 echo -e "\nBegin installation (or abort with ctrl+c)..."
 
 sudo apt-get update >/dev/null
 sudo apt-get install -y git >/dev/null
 
-echo "Cloning Omakub..."
-rm -rf ~/.local/share/omakub
-git clone https://github.com/olipet284/omakub.git ~/.local/share/omakub >/dev/null
-if [[ $OMAKUB_REF != "master" ]]; then
-	cd ~/.local/share/omakub
-	git fetch origin "${OMAKUB_REF:-stable}" && git checkout "${OMAKUB_REF:-stable}"
-	cd -
-fi
+echo "Cloning Olikub..."
+rm -rf ~/.local/share/olikub
+git clone --branch "${OLIKUB_REF:-main}" --single-branch https://github.com/olipet284/olikub.git ~/.local/share/olikub >/dev/null
 
 echo "Installation starting..."
-source ~/.local/share/omakub/install.sh
+source ~/.local/share/olikub/install.sh

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 xdg-open "https://manual.omakub.org" &>/dev/null
-source $OMAKUB_PATH/bin/omakub-sub/menu.sh
+source $OLIKUB_PATH/bin/olikub-sub/menu.sh
