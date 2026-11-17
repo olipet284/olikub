@@ -33,7 +33,7 @@ if [[ "$CHOICE" == "<< Back"* ]] || [[ -z "$CHOICE" ]]; then
   # Don't install anything
   echo ""
 elif [[ "$CHOICE" == "> All"* ]]; then
-  INSTALLER_FILE=$(gum file $OLIKUB_PATH/install)
+  INSTALLER_FILE=$(gum file "$OLIKUB_PATH/install")
 
   [[ -n "$INSTALLER_FILE" ]] &&
     gum confirm "Run installer?" &&
@@ -57,4 +57,4 @@ else
 fi
 
 clear
-source $OLIKUB_PATH/bin/olikub
+source "$OLIKUB_PATH/bin/olikub"

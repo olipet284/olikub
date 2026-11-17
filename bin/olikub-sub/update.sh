@@ -28,4 +28,4 @@ else
 fi
 
 clear
-source $OLIKUB_PATH/bin/olikub
+source "$OLIKUB_PATH/bin/olikub"

@@ -8,7 +8,7 @@ Comment=Olikub Controls
 Exec=alacritty --config-file /home/$USER/.config/alacritty/pane.toml --class=Olikub --title=Olikub -e olikub
 Terminal=false
 Type=Application
-Icon=/home/$USER/.local/share/olikub/applications/icons/Olikub.png
+Icon=$OLIKUB_PATH/applications/icons/Olikub.png
 Categories=GTK;
 StartupNotify=false
 EOF

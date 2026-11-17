@@ -1,5 +1,5 @@
-source ~/.local/share/olikub/defaults/bash/shell
-source ~/.local/share/olikub/defaults/bash/aliases
-source ~/.local/share/olikub/defaults/bash/functions
-source ~/.local/share/olikub/defaults/bash/prompt
-source ~/.local/share/olikub/defaults/bash/init
+source "$OLIKUB_PATH/defaults/bash/shell"
+source "$OLIKUB_PATH/defaults/bash/aliases"
+source "$OLIKUB_PATH/defaults/bash/functions"
+source "$OLIKUB_PATH/defaults/bash/prompt"
+source "$OLIKUB_PATH/defaults/bash/init"

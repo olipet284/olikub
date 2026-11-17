@@ -9,5 +9,5 @@ sudo apt install -y fastfetch
 if [ ! -f "$HOME/.config/fastfetch/config.jsonc" ]; then
   # Use Olikub fastfetch config
   mkdir -p ~/.config/fastfetch
-  cp ~/.local/share/olikub/configs/fastfetch.jsonc ~/.config/fastfetch/config.jsonc
+  cp "$OLIKUB_PATH/configs/fastfetch.jsonc" ~/.config/fastfetch/config.jsonc
 fi

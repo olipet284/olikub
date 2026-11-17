@@ -15,7 +15,7 @@ set_font() {
 		fc-cache
 		cd -
 		clear
-		source $OLIKUB_PATH/ascii.sh
+		source "$OLIKUB_PATH/ascii.sh"
 	fi
 
 	gsettings set org.gnome.desktop.interface monospace-font-name "$font_name 10"
@@ -43,9 +43,9 @@ case $choice in
 	set_font "MesloLGS Nerd Font" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip" "ttf"
 	;;
 "> Change size")
-	source $OLIKUB_PATH/bin/olikub-sub/font-size.sh
+	source "$OLIKUB_PATH/bin/olikub-sub/font-size.sh"
 	exit
 	;;
 esac
 
-source $OLIKUB_PATH/bin/olikub-sub/menu.sh
+source "$OLIKUB_PATH/bin/olikub-sub/menu.sh"

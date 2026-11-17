@@ -22,5 +22,5 @@ else
 fi
 
 clear
-source $OLIKUB_PATH/bin/olikub-sub/header.sh
-source $OLIKUB_PATH/bin/olikub-sub/install.sh
+source "$OLIKUB_PATH/bin/olikub-sub/header.sh"
+source "$OLIKUB_PATH/bin/olikub-sub/install.sh"

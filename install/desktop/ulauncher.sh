@@ -7,7 +7,7 @@ sudo apt install ulauncher -y
 
 # Start ulauncher to have it populate config before we overwrite
 mkdir -p ~/.config/autostart/
-cp ~/.local/share/olikub/configs/ulauncher.desktop ~/.config/autostart/ulauncher.desktop
+cp "$OLIKUB_PATH/configs/ulauncher.desktop" ~/.config/autostart/ulauncher.desktop
 gtk-launch ulauncher.desktop >/dev/null 2>&1
 sleep 2 # ensure enough time for ulauncher to set defaults
-cp ~/.local/share/olikub/configs/ulauncher.json ~/.config/ulauncher/settings.json
+cp "$OLIKUB_PATH/configs/ulauncher.json" ~/.config/ulauncher/settings.json

@@ -6,7 +6,7 @@ gsettings set org.gnome.desktop.interface gtk-theme "Yaru-$OLIKUB_THEME_COLOR-da
 gsettings set org.gnome.desktop.interface icon-theme "Yaru-$OLIKUB_THEME_COLOR"
 gsettings set org.gnome.desktop.interface accent-color "$OLIKUB_THEME_COLOR" 2>/dev/null || true
 
-BACKGROUND_ORG_PATH="$HOME/.local/share/olikub/themes/$OLIKUB_THEME_BACKGROUND"
+BACKGROUND_ORG_PATH="$OLIKUB_PATH/themes/$OLIKUB_THEME_BACKGROUND"
 BACKGROUND_DEST_DIR="$HOME/.local/share/backgrounds"
 BACKGROUND_DEST_PATH="$BACKGROUND_DEST_DIR/$(echo $OLIKUB_THEME_BACKGROUND | tr '/' '-')"
 

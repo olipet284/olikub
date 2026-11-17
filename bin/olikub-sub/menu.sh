@@ -6,4 +6,4 @@ else
 	SUB=$1
 fi
 
-[ -n "$SUB" ] && [ "$SUB" != "quit" ] && source $OLIKUB_PATH/bin/olikub-sub/$SUB.sh
+[ -n "$SUB" ] && [ "$SUB" != "quit" ] && source "$OLIKUB_PATH/bin/olikub-sub/$SUB.sh"

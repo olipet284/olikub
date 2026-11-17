@@ -8,5 +8,5 @@ rm zellij.tar.gz zellij
 cd -
 
 mkdir -p ~/.config/zellij/themes
-[ ! -f "$HOME/.config/zellij/config.kdl" ] && cp ~/.local/share/olikub/configs/zellij.kdl ~/.config/zellij/config.kdl
-cp ~/.local/share/olikub/themes/tokyo-night/zellij.kdl ~/.config/zellij/themes/tokyo-night.kdl
+[ ! -f "$HOME/.config/zellij/config.kdl" ] && cp "$OLIKUB_PATH/configs/zellij.kdl" ~/.config/zellij/config.kdl
+cp "$OLIKUB_PATH/themes/tokyo-night/zellij.kdl" ~/.config/zellij/themes/tokyo-night.kdl

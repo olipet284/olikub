@@ -45,7 +45,7 @@ if [[ -n "$languages" ]]; then
       done
 
       gum confirm "Do you want to install venv-cli for Python virtual environment management?" && \
-      source ~/.local/share/olikub/install/terminal/optional/venv-cli.sh
+      source "$OLIKUB_PATH/install/terminal/optional/venv-cli.sh"
       ;;
     Elixir)
       mise use --global erlang@latest
