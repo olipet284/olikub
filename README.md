@@ -33,7 +33,8 @@ git worktree add ../olikub-feature -b feat/my-change main
 
 ## Themes and hotkeys
 
-Open the Olikub app or run `olikub` in a shell to choose a theme. Btop uses the
+Open the Olikub app, press Super+Shift+T, or run `olikub theme` in a shell to
+choose a theme. Btop uses the
 stable `olikub` theme name; changing palettes replaces
 `~/.config/btop/themes/olikub.theme` without rewriting the rest of
 `~/.config/btop/btop.conf`. On upgrade, Olikub migrates an existing regular

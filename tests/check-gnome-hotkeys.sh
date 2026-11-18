@@ -31,6 +31,10 @@ applied_count=$(grep -c 'custom-keybinding:.* name ' "$GSETTINGS_LOG")
 grep -F ' name Open File Explorer' "$GSETTINGS_LOG" >/dev/null
 grep -F ' name New Ghostty Window' "$GSETTINGS_LOG" >/dev/null
 grep -F ' command ghostty' "$GSETTINGS_LOG" >/dev/null
+grep -F ' name Choose Olikub Theme' "$GSETTINGS_LOG" >/dev/null
+grep -F ' command ghostty -e bash -ic "olikub theme"' "$GSETTINGS_LOG" >/dev/null
+grep -F ' name Open Teams' "$GSETTINGS_LOG" >/dev/null
+grep -F ' binding <Shift><Super><Alt>t' "$GSETTINGS_LOG" >/dev/null
 
 # Existing user files are retained rather than replaced with the sample.
 printf '\n# user marker\n' >> "$sample"
