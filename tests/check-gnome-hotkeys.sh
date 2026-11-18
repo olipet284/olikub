@@ -25,6 +25,8 @@ run_hotkeys
 sample="$XDG_CONFIG_HOME/olikub/hotkeys/sample.sh"
 [[ -f "$sample" ]]
 cmp "$OLIKUB_PATH/configs/olikub/hotkeys/sample.sh" "$sample"
+grep -F "switch-to-workspace-left ['<Super>Tab']" "$GSETTINGS_LOG" >/dev/null
+grep -F "switch-to-workspace-right ['<Shift><Super>Tab']" "$GSETTINGS_LOG" >/dev/null
 default_count=$(grep -c '^add_custom_keybinding ' "$sample")
 applied_count=$(grep -c 'custom-keybinding:.* name ' "$GSETTINGS_LOG")
 [[ "$applied_count" == "$default_count" ]]
@@ -33,6 +35,9 @@ grep -F ' name New Ghostty Window' "$GSETTINGS_LOG" >/dev/null
 grep -F ' command ghostty' "$GSETTINGS_LOG" >/dev/null
 grep -F ' name Choose Olikub Theme' "$GSETTINGS_LOG" >/dev/null
 grep -F ' command ghostty -e bash -ic "olikub theme"' "$GSETTINGS_LOG" >/dev/null
+grep -F ' name Lock Screen' "$GSETTINGS_LOG" >/dev/null
+grep -F ' command loginctl lock-session' "$GSETTINGS_LOG" >/dev/null
+grep -F ' binding <Control><Super>l' "$GSETTINGS_LOG" >/dev/null
 grep -F ' name Open Teams' "$GSETTINGS_LOG" >/dev/null
 grep -F ' binding <Shift><Super><Alt>t' "$GSETTINGS_LOG" >/dev/null
 
