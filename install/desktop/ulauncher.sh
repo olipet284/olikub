@@ -18,7 +18,7 @@ backup_dangling_symlink() {
   fi
 }
 
-# Start ulauncher to have it populate config before we overwrite
+# Preserve existing settings; only launch and seed defaults on first setup.
 AUTOSTART_FILE="$HOME/.config/autostart/ulauncher.desktop"
 ULAUNCHER_SETTINGS_FILE="$HOME/.config/ulauncher/settings.json"
 mkdir -p "$HOME/.config/autostart" "$HOME/.config/ulauncher"
@@ -34,8 +34,8 @@ fi
 if [[ ! -e "$AUTOSTART_FILE" && ! -L "$AUTOSTART_FILE" ]]; then
   cp "$OLIKUB_PATH/configs/ulauncher.desktop" "$AUTOSTART_FILE"
 fi
-gtk-launch ulauncher.desktop >/dev/null 2>&1
-sleep 2 # ensure enough time for ulauncher to set defaults
 if [[ "$ULAUNCHER_SETTINGS_EXISTED" == false ]]; then
+  gtk-launch ulauncher.desktop >/dev/null 2>&1
+  sleep 2 # ensure enough time for ulauncher to set defaults
   cp "$OLIKUB_PATH/configs/ulauncher.json" "$ULAUNCHER_SETTINGS_FILE"
 fi
