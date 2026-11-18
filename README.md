@@ -1,26 +1,40 @@
-# Omakub
+# Olikub
 
-This is a forked version of DHH's Omakub. This is my own Omakase (chefs choice) setup, allowing me to use the original Omakub (and future features), while allowing me to add my own customizations and tweaks on top of it. To see how this differs from the original, see the pull requests. And to install it yourself, run
+Olikub is my Omakase (chef's choice) setup, based on DHH's [Omakub](https://github.com/basecamp/omakub), with my own customizations and tweaks. To install it on a fresh Ubuntu 26.04+ system, run:
+
 ```sh
-wget -qO- https://raw.githubusercontent.com/olipet284/omakub/HEAD/boot.sh | bash
+wget -qO- https://raw.githubusercontent.com/olipet284/olikub/main/boot.sh | bash
 ```
 
----
+Choose another checkout location with `--directory`:
 
-Turn a fresh Ubuntu installation into a fully-configured, beautiful, and modern web development system by running a single command. That's the one-line pitch for Omakub. No need to write bespoke configs for every essential tool just to get started or to be up on all the latest command-line tools. Omakub is an opinionated take on what Linux can be at its best.
+```sh
+wget -qO- https://raw.githubusercontent.com/olipet284/olikub/main/boot.sh | bash -s -- --directory "$HOME/repos/olikub/main"
+```
 
-Watch the introduction video and read more at [omakub.org](https://omakub.org).
+Without an option, Olikub uses `~/.local/share/olikub` by default and offers a
+directory prompt when run in a terminal. Running `boot.sh` from an existing
+Olikub `main` checkout reuses that checkout. Existing paths must be the official
+repository on `main`; Olikub does not delete or replace them.
 
-## Contributing to the documentation
+Olikub turns a fresh Ubuntu installation into a fully configured, modern web development system with a single command.
 
-Please help us improve Omakub's documentation on the [basecamp/omakub-site repository](https://github.com/basecamp/omakub-site).
+## Development
+
+Use feature branches or worktrees for development; keep the runtime checkout on
+the official `main` branch. The bootstrap and self-updater use `main`, so merge
+changes there before expecting a normal install or update to include them.
+
+Create a separate worktree for a feature with:
+
+```sh
+git worktree add ../olikub-feature -b feat/my-change main
+```
+
+## Upstream project
+
+Olikub builds on Omakub. See [omakub.org](https://omakub.org) for the upstream introduction and documentation, and [Omakub extensions](EXTENSIONS.md) for community add-ons.
 
 ## License
 
-Omakub is released under the [MIT License](https://opensource.org/licenses/MIT).
-
-## Extras
-
-While omakub is purposed to be an opinionated take, the open source community offers alternative customization, add-ons, extras, that you can use to adjust, replace or enrich your experience.
-
-[⇒ Browse the omakub extensions.](EXTENSIONS.md)
+Olikub is released under the [MIT License](https://opensource.org/licenses/MIT).

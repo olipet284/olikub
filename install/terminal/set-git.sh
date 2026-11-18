@@ -9,10 +9,10 @@ git config --global pull.rebase true
 git config --global init.defaultBranch main
 
 # Set identification from install inputs
-if [[ -n "${OMAKUB_USER_NAME//[[:space:]]/}" ]]; then
-  git config --global user.name "$OMAKUB_USER_NAME"
+if [[ -n "${OLIKUB_USER_NAME//[[:space:]]/}" ]]; then
+  git config --global user.name "$OLIKUB_USER_NAME"
 fi
 
-if [[ -n "${OMAKUB_USER_EMAIL//[[:space:]]/}" ]]; then
-  git config --global user.email "$OMAKUB_USER_EMAIL"
+if [[ -n "${OLIKUB_USER_EMAIL//[[:space:]]/}" ]]; then
+  git config --global user.email "$OLIKUB_USER_EMAIL"
 fi

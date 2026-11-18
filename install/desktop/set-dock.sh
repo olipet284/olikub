@@ -9,7 +9,7 @@ apps=(
 	"code.desktop"
 	"md.obsidian.Obsidian.desktop"
 	"Activity.desktop"
-	"Omakub.desktop"
+	"Olikub.desktop"
 	"org.gnome.Settings.desktop"
 	"org.gnome.Nautilus.desktop"
 	"localsend_app.desktop"

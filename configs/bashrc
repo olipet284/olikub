@@ -1,4 +1,9 @@
-source ~/.local/share/omakub/defaults/bash/rc
+OLIKUB_PATH_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/olikub/path"
+if [[ -r "$OLIKUB_PATH_FILE" ]]; then
+    IFS= read -r OLIKUB_PATH < "$OLIKUB_PATH_FILE"
+fi
+export OLIKUB_PATH="${OLIKUB_PATH:-$HOME/.local/share/olikub}"
+source "$OLIKUB_PATH/defaults/bash/rc"
 for file in ~/dotfiles/bash/*; do
     source $file
 done
