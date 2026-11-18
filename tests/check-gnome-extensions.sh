@@ -14,6 +14,13 @@ fi
 MOCK
 cat > "$tmp/bin/sudo" <<'MOCK'
 #!/usr/bin/env bash
+if [[ $1 == cp ]]; then
+  shift
+  while [[ $# -gt 1 ]]; do
+    [[ -f "$1" ]] || { printf 'missing schema: %s\n' "$1" >&2; exit 1; }
+    shift
+  done
+fi
 exit 0
 MOCK
 cat > "$tmp/bin/gum" <<'MOCK'
@@ -36,6 +43,18 @@ cat > "$tmp/pipx/venvs/gnome-extensions-cli/bin/gext" <<'MOCK'
 printf '%s\n' "$*" >> "$GEXT_LOG"
 MOCK
 chmod +x "$tmp/bin/"* "$tmp/pipx/venvs/gnome-extensions-cli/bin/gext"
+
+schema_root="$tmp/home/.local/share/gnome-shell/extensions"
+for schema in \
+  'tactile@lundal.io/schemas/org.gnome.shell.extensions.tactile.gschema.xml' \
+  'just-perfection-desktop@just-perfection/schemas/org.gnome.shell.extensions.just-perfection.gschema.xml' \
+  'blur-my-shell@aunetx/schemas/org.gnome.shell.extensions.blur-my-shell.gschema.xml' \
+  'space-bar@luchrioh/schemas/org.gnome.shell.extensions.space-bar.behavior.gschema.xml' \
+  'tophat@fflewddur.github.io/schemas/org.gnome.shell.extensions.tophat.gschema.xml' \
+  'AlphabeticalAppGrid@stuarthayhurst/schemas/org.gnome.shell.extensions.alphabetical-app-grid.gschema.xml'; do
+  mkdir -p "$schema_root/${schema%/*}"
+  : > "$schema_root/$schema"
+done
 
 HOME="$tmp/home" PIPX_HOME_TEST="$tmp/pipx" GEXT_LOG="$tmp/gext.log" \
   PATH="$tmp/bin:/usr/bin:/bin" bash "$root/install/desktop/set-gnome-extensions.sh"
