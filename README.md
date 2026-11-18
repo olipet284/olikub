@@ -31,6 +31,21 @@ Create a separate worktree for a feature with:
 git worktree add ../olikub-feature -b feat/my-change main
 ```
 
+## Themes and hotkeys
+
+Open the Olikub app or run `olikub` in a shell to choose a theme. Btop uses the
+stable `olikub` theme name; changing palettes replaces
+`~/.config/btop/themes/olikub.theme` without rewriting the rest of
+`~/.config/btop/btop.conf`. On upgrade, Olikub migrates an existing regular
+Btop config from an Olikub theme name to `olikub`; config symlinks are left
+alone.
+
+GNOME custom shortcuts are loaded from
+`${XDG_CONFIG_HOME:-$HOME/.config}/olikub/hotkeys/*.sh`. Olikub creates a sample
+file if the directory is missing and leaves existing user directories alone.
+The files use `add_custom_keybinding 'Name' 'command' '<Binding>'` and can be
+symlinked from a dotfiles repository.
+
 ## Upstream project
 
 Olikub builds on Omakub. See [omakub.org](https://omakub.org) for the upstream introduction and documentation, and [Omakub extensions](EXTENSIONS.md) for community add-ons.

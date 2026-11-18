@@ -2,6 +2,12 @@
 
 sudo apt install -y gnome-shell-extension-manager gir1.2-gtop-2.0 gir1.2-clutter-1.0
 pipx install gnome-extensions-cli --system-site-packages
+PIPX_HOME_DIR=$(pipx environment --value PIPX_HOME)
+GEXT="$PIPX_HOME_DIR/venvs/gnome-extensions-cli/bin/gext"
+if [[ ! -x "$GEXT" ]]; then
+  printf 'gext executable not found in pipx environment: %s\n' "$GEXT" >&2
+  exit 1
+fi
 
 # Turn off default Ubuntu extensions
 gnome-extensions disable tiling-assistant@ubuntu.com
@@ -16,13 +22,13 @@ gum confirm "To install Gnome extensions, you need to accept some confirmations.
 sudo apt -y install ubuntu-restricted-extras
 
 # Install new extensions
-gext install tactile@lundal.io
-gext install just-perfection-desktop@just-perfection
-gext install blur-my-shell@aunetx
-gext install space-bar@luchrioh
-gext install undecorate@sun.wxg@gmail.com
-gext install tophat@fflewddur.github.io
-gext install AlphabeticalAppGrid@stuarthayhurst
+"$GEXT" install tactile@lundal.io
+"$GEXT" install just-perfection-desktop@just-perfection
+"$GEXT" install blur-my-shell@aunetx
+"$GEXT" install space-bar@luchrioh
+"$GEXT" install undecorate@sun.wxg@gmail.com
+"$GEXT" install tophat@fflewddur.github.io
+"$GEXT" install AlphabeticalAppGrid@stuarthayhurst
 
 # Compile gsettings schemas in order to be able to set them
 sudo cp ~/.local/share/gnome-shell/extensions/tactile@lundal.io/schemas/org.gnome.shell.extensions.tactile.gschema.xml /usr/share/glib-2.0/schemas/
