@@ -39,8 +39,8 @@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5
 gsettings set org.gnome.desktop.wm.keybindings toggle-above "['<Super>o']"
 
 # Rotate workspaces
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "['<Super>Tab']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Shift><Super>Tab']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "['<Shift><Super>Tab']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Super>Tab']"
 
 # Disable default Alt+Space window menu so we can use it for Ulauncher
 gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "[]"

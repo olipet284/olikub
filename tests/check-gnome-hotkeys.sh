@@ -25,8 +25,8 @@ run_hotkeys
 sample="$XDG_CONFIG_HOME/olikub/hotkeys/sample.sh"
 [[ -f "$sample" ]]
 cmp "$OLIKUB_PATH/configs/olikub/hotkeys/sample.sh" "$sample"
-grep -F "switch-to-workspace-left ['<Super>Tab']" "$GSETTINGS_LOG" >/dev/null
-grep -F "switch-to-workspace-right ['<Shift><Super>Tab']" "$GSETTINGS_LOG" >/dev/null
+grep -F "switch-to-workspace-left ['<Shift><Super>Tab']" "$GSETTINGS_LOG" >/dev/null
+grep -F "switch-to-workspace-right ['<Super>Tab']" "$GSETTINGS_LOG" >/dev/null
 default_count=$(grep -c '^add_custom_keybinding ' "$sample")
 applied_count=$(grep -c 'custom-keybinding:.* name ' "$GSETTINGS_LOG")
 [[ "$applied_count" == "$default_count" ]]
