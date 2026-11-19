@@ -4,8 +4,8 @@ if [[ -r "$OLIKUB_PATH_FILE" ]]; then
 fi
 export OLIKUB_PATH="${OLIKUB_PATH:-$HOME/.local/share/olikub}"
 source "$OLIKUB_PATH/defaults/bash/rc"
-for file in ~/dotfiles/bash/*; do
-    source $file
+for file in "$HOME"/dotfiles/bash/*; do
+    [ -f "$file" ] && source "$file"
 done
 
 # Editor used by CLI
