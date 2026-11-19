@@ -39,8 +39,8 @@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5
 gsettings set org.gnome.desktop.wm.keybindings toggle-above "['<Super>o']"
 
 # Rotate workspaces
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "['<Primary><Super>h']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Primary><Super>l']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "['<Shift><Super>Tab']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Super>Tab']"
 
 # Disable default Alt+Space window menu so we can use it for Ulauncher
 gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "[]"
@@ -49,7 +49,6 @@ gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "[]"
 gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Primary><Alt>d', '<Super>d']"
 
 # Define custom keybindings as: name, command, binding.
-# Add a new shortcut by adding one line: add_custom_keybinding 'Name' 'command' '<Binding>'
 CUSTOM_NAMES=()
 CUSTOM_COMMANDS=()
 CUSTOM_BINDINGS=()
@@ -60,32 +59,25 @@ add_custom_keybinding() {
   CUSTOM_BINDINGS+=("$3")
 }
 
-add_custom_keybinding 'Ulauncher' 'sh -c "pgrep -x ulauncher && { ulauncher-toggle || true; } || setsid -f ulauncher"' '<Alt>space'
-add_custom_keybinding 'Flameshot' 'sh -c -- "flameshot gui"' '<Control>Print'
-add_custom_keybinding 'New Alacritty Window' 'alacritty' '<Super>Return'
-add_custom_keybinding 'New Firefox Window' 'firefox --new-window' '<Shift><Super>b'
-add_custom_keybinding 'New Brave Window' 'sh -c -- "if command -v brave-browser >/dev/null 2>&1; then exec brave-browser --new-window; elif command -v brave >/dev/null 2>&1; then exec brave --new-window; else exec flatpak run com.brave.Browser --new-window; fi"' '<Shift><Super><Alt>b'
-add_custom_keybinding 'Open Work Calendar' 'firefox https://outlook.cloud.microsoft/calendar/view/workweek' '<Shift><Super>c'
-add_custom_keybinding 'Open Personal Calendar' 'sh -c -- "if command -v brave-browser >/dev/null 2>&1; then exec brave-browser --new-window https://calendar.google.com/calendar/u/0/r; elif command -v brave >/dev/null 2>&1; then exec brave --new-window https://calendar.google.com/calendar/u/0/r; else exec flatpak run com.brave.Browser --new-window https://calendar.google.com/calendar/u/0/r; fi"' '<Shift><Super><Alt>c'
-add_custom_keybinding 'Open Work Email' 'firefox https://outlook.cloud.microsoft/mail/' '<Shift><Super>e'
-add_custom_keybinding 'Open Personal Email' 'sh -c -- "if command -v brave-browser >/dev/null 2>&1; then exec brave-browser --new-window https://mail.google.com/mail/u/0/; elif command -v brave >/dev/null 2>&1; then exec brave --new-window https://mail.google.com/mail/u/0/; else exec flatpak run com.brave.Browser --new-window https://mail.google.com/mail/u/0/; fi"' '<Shift><Super><Alt>e'
-add_custom_keybinding 'Open Music Player' 'bash -lc "exec alacritty -e termusic"' '<Shift><Super>m'
-add_custom_keybinding 'Open YouTube (work profile)' 'firefox https://www.youtube.com/' '<Shift><Super>y'
-add_custom_keybinding 'Open YouTube (personal profile)' 'sh -c -- "if command -v brave-browser >/dev/null 2>&1; then exec brave-browser --new-window https://www.youtube.com/; elif command -v brave >/dev/null 2>&1; then exec brave --new-window https://www.youtube.com/; else exec flatpak run com.brave.Browser --new-window https://www.youtube.com/; fi"' '<Shift><Super><Alt>y'
-add_custom_keybinding 'Open Obsidian' 'sh -c -- "if [ -x /opt/Obsidian/obsidian ]; then exec /opt/Obsidian/obsidian; elif command -v obsidian >/dev/null 2>&1; then exec obsidian; else exec gtk-launch obsidian.desktop; fi"' '<Shift><Super>o'
-add_custom_keybinding 'Open Slack' 'firefox https://sallinggroup.slack.com/' '<Shift><Super>s'
-add_custom_keybinding 'Open Teams' 'firefox https://teams.microsoft.com/' '<Shift><Super>t'
-add_custom_keybinding 'Open Marktext' 'sh -c -- "if command -v marktext >/dev/null 2>&1; then exec marktext; else exec gtk-launch marktext.desktop; fi"' '<Shift><Super>n'
-add_custom_keybinding 'Open Neovim' 'alacritty -e nvim' '<Shift><Super><Alt>n'
-add_custom_keybinding 'Open VS Code' 'code' '<Shift><Super>v'
-add_custom_keybinding 'Open Bluetooth Settings' 'gnome-control-center bluetooth' '<Control><Super>b'
-add_custom_keybinding 'Open Display Settings' 'gnome-control-center display' '<Primary><Super>d'
-add_custom_keybinding 'Open Power Settings' 'gnome-control-center power' '<Control><Super>p'
-add_custom_keybinding 'Open WiFi Settings' 'gnome-control-center wifi' '<Control><Super>w'
-add_custom_keybinding 'Open Audio Settings' 'gnome-control-center sound' '<Control><Super>a'
-add_custom_keybinding 'Open File Explorer' 'nautilus' '<Shift><Super>f'
+HOTKEYS_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/olikub/hotkeys"
+if [[ -L "$HOTKEYS_DIR" && ! -e "$HOTKEYS_DIR" ]]; then
+  printf 'Hotkeys directory is a dangling symlink: %s\n' "$HOTKEYS_DIR" >&2
+  exit 1
+fi
+if [[ ! -e "$HOTKEYS_DIR" ]]; then
+  mkdir -p "$HOTKEYS_DIR"
+  cp "$OLIKUB_PATH/configs/olikub/hotkeys/sample.sh" "$HOTKEYS_DIR/sample.sh"
+elif [[ ! -d "$HOTKEYS_DIR" ]]; then
+  printf 'Hotkeys path is not a directory: %s\n' "$HOTKEYS_DIR" >&2
+  exit 1
+fi
 
-TOTAL_CUSTOM_KEYBINDINGS=$((${#CUSTOM_NAMES[@]} - 1))
+# Files can be symlinked from a dotfiles repo; glob order gives stable numbering.
+for HOTKEY_FILE in "$HOTKEYS_DIR"/*.sh; do
+  [[ -f "$HOTKEY_FILE" ]] || continue
+  source "$HOTKEY_FILE"
+done
+
 CUSTOM_KEYBINDINGS=""
 for i in "${!CUSTOM_NAMES[@]}"; do
   CUSTOM_KEYBINDINGS="$CUSTOM_KEYBINDINGS '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom$i/',"

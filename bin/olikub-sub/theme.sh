@@ -3,19 +3,29 @@
 THEME_NAMES=("Tokyo Night" "Catppuccin" "Nord" "Everforest" "Gruvbox" "Kanagawa" "Ristretto" "Rose Pine" "Matte Black" "Osaka Jade")
 THEME=$(gum choose "${THEME_NAMES[@]}" "<< Back" --header "Choose your theme" --height 12 | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
 
+copy_theme_file() {
+  local source=$1 destination=$2 temporary
+  if [[ -L "$destination" && ! -e "$destination" ]]; then
+    temporary=$(mktemp "${destination}.XXXXXX") || return 1
+    if cp "$source" "$temporary" && mv -f -- "$temporary" "$destination"; then
+      return 0
+    fi
+    rm -f -- "$temporary"
+    return 1
+  fi
+  cp "$source" "$destination"
+}
+
 if [ -n "$THEME" ] && [ "$THEME" != "<<-back" ]; then
   cp "$OLIKUB_PATH/themes/$THEME/alacritty.toml" ~/.config/alacritty/theme.toml
-  cp "$OLIKUB_PATH/themes/$THEME/zellij.kdl" ~/.config/zellij/themes/$THEME.kdl
+  copy_theme_file "$OLIKUB_PATH/themes/$THEME/zellij.kdl" "$HOME/.config/zellij/themes/$THEME.kdl" || exit 1
   sed -i "s/theme \".*\"/theme \"$THEME\"/g" ~/.config/zellij/config.kdl
   if [ -d "$HOME/.config/nvim" ]; then
     cp "$OLIKUB_PATH/themes/$THEME/neovim.lua" ~/.config/nvim/lua/plugins/theme.lua
   fi
 
   if [ -f "$OLIKUB_PATH/themes/$THEME/btop.theme" ]; then
-    cp "$OLIKUB_PATH/themes/$THEME/btop.theme" ~/.config/btop/themes/$THEME.theme
-    sed -i "s/color_theme = \".*\"/color_theme = \"$THEME\"/g" ~/.config/btop/btop.conf
-  else
-    sed -i "s/color_theme = \".*\"/color_theme = \"Default\"/g" ~/.config/btop/btop.conf
+    cp "$OLIKUB_PATH/themes/$THEME/btop.theme" "$HOME/.config/btop/themes/olikub.theme"
   fi
 
   source "$OLIKUB_PATH/themes/$THEME/gnome.sh"
