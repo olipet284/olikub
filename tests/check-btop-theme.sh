@@ -16,11 +16,15 @@ printf '%s\n' 'Tokyo Night'
 MOCK
 chmod +x "$tmp/bin/sudo" "$tmp/bin/gum"
 
+run_btop_install() {
+  HOME="$1" OLIKUB_PATH="$root" PATH="$tmp/bin:/usr/bin:/bin" \
+    bash -c 'source "$OLIKUB_PATH/lib/apps.sh"; app_run "$OLIKUB_PATH/apps/tui/system/btop.sh" install'
+}
+
 # A first install seeds the stable theme name and leaves a stale old theme link alone.
 mkdir -p "$tmp/fresh-home/.config/btop/themes"
 ln -s "$tmp/missing-theme" "$tmp/fresh-home/.config/btop/themes/tokyo-night.theme"
-HOME="$tmp/fresh-home" OLIKUB_PATH="$root" PATH="$tmp/bin:/usr/bin:/bin" \
-  bash "$root/install/terminal/app-btop.sh"
+run_btop_install "$tmp/fresh-home"
 grep -Fx 'color_theme = "olikub"' "$tmp/fresh-home/.config/btop/btop.conf" >/dev/null
 cmp "$root/themes/tokyo-night/btop.theme" "$tmp/fresh-home/.config/btop/themes/olikub.theme"
 [[ -L "$tmp/fresh-home/.config/btop/themes/tokyo-night.theme" ]]
@@ -29,8 +33,7 @@ cmp "$root/themes/tokyo-night/btop.theme" "$tmp/fresh-home/.config/btop/themes/o
 mkdir -p "$tmp/old-home/.config/btop/themes"
 printf '%s\n' 'color_theme = "catppuccin"' 'user_setting = "keep me"' \
   > "$tmp/old-home/.config/btop/btop.conf"
-HOME="$tmp/old-home" OLIKUB_PATH="$root" PATH="$tmp/bin:/usr/bin:/bin" \
-  bash "$root/install/terminal/app-btop.sh"
+run_btop_install "$tmp/old-home"
 grep -Fx 'color_theme = "olikub"' "$tmp/old-home/.config/btop/btop.conf" >/dev/null
 grep -Fx 'user_setting = "keep me"' "$tmp/old-home/.config/btop/btop.conf" >/dev/null
 
@@ -63,8 +66,7 @@ mkdir -p "$tmp/linked-home/.config/btop/themes" "$tmp/dotfiles"
 printf '%s\n' 'color_theme = "catppuccin"' 'user_setting = "keep me"' > "$tmp/dotfiles/btop.conf"
 cp "$tmp/dotfiles/btop.conf" "$tmp/dotfiles/btop.conf.before"
 ln -s "$tmp/dotfiles/btop.conf" "$tmp/linked-home/.config/btop/btop.conf"
-HOME="$tmp/linked-home" OLIKUB_PATH="$root" PATH="$tmp/bin:/usr/bin:/bin" \
-  bash "$root/install/terminal/app-btop.sh"
+run_btop_install "$tmp/linked-home"
 cmp "$tmp/dotfiles/btop.conf.before" "$tmp/dotfiles/btop.conf"
 [[ -L "$tmp/linked-home/.config/btop/btop.conf" ]]
 

@@ -10,7 +10,6 @@ cat > "$tmp/bin/gum" <<'MOCK'
 #!/usr/bin/env bash
 printf '%s\n' "$*" >> "$GUM_LOG"
 case " $* " in
-  *"Select optional apps"*) ;;
   *"Select programming languages"*) printf '%s\n' "$LANGUAGE_SELECTION" ;;
   *"Select Python versions"*) printf '%s\n' 3.13 ;;
   *"Select databases"*) ;;

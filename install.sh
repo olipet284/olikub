@@ -29,13 +29,34 @@ if [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]]; then
   # Install terminal tools
   source "$OLIKUB_PATH/install/terminal.sh"
 
+  # Default GUI apps may use Flatpak, which is otherwise installed later with
+  # the desktop tweaks.
+  source "$OLIKUB_PATH/install/desktop/a-flatpak.sh"
+
+  # Install the apps that make up a default Olikub setup. Optional apps are
+  # available from the Olikub menu. GUI apps are only part of a GNOME install.
+  source "$OLIKUB_PATH/lib/apps.sh"
+  OLIKUB_APP_KINDS="cli tui gui"
+  export OLIKUB_APP_KINDS
+  olikub_apps_install_defaults
+
   # Install desktop tools and tweaks
   source "$OLIKUB_PATH/install/desktop.sh"
-
-  # Revert to normal idle and lock settings
-  gsettings set org.gnome.desktop.screensaver lock-enabled true
-  gsettings set org.gnome.desktop.session idle-delay 300
 else
   echo "Only installing terminal tools..."
   source "$OLIKUB_PATH/install/terminal.sh"
+
+  source "$OLIKUB_PATH/lib/apps.sh"
+  OLIKUB_APP_KINDS="cli tui"
+  export OLIKUB_APP_KINDS
+  olikub_apps_install_defaults
+fi
+
+if [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]]; then
+  # Revert to normal idle and lock settings
+  gsettings set org.gnome.desktop.screensaver lock-enabled true
+  gsettings set org.gnome.desktop.session idle-delay 300
+
+  # Logout to pickup changes
+  gum confirm "Ready to reboot for all settings to take effect?" && sudo reboot || true
 fi
