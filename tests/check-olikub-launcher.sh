@@ -5,7 +5,7 @@ root=$(cd "$(dirname "$0")/.." && pwd)
 tmp=$(mktemp -d)
 trap 'rm -rf -- "$tmp"' EXIT
 mkdir -p "$tmp/home/.local/share/applications"
-HOME="$tmp/home" OLIKUB_PATH="$root" bash "$root/applications/Olikub.sh"
+HOME="$tmp/home" OLIKUB_PATH="$root" bash "$root/launchers/Olikub.sh"
 
 launcher="$tmp/home/.local/share/applications/Olikub.desktop"
 grep -F -- '-e bash -ic olikub' "$launcher" >/dev/null

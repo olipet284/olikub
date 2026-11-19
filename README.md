@@ -31,6 +31,27 @@ Create a separate worktree for a feature with:
 git worktree add ../olikub-feature -b feat/my-change main
 ```
 
+## Apps
+
+Optional applications live in `apps/<kind>/<topic>/<app>.sh`, where `kind` is
+`cli`, `tui`, or `gui`, and `topic` groups apps by use (`coding-harness`,
+`browser`, `multiplexer`, ...). Each app file defines `APP_NAME`,
+`APP_DESCRIPTION`, `APP_DEFAULT`, and the functions `app_installed`,
+`app_install`, and `app_uninstall`. `app_installed` decides whether the app
+appears under Install or Uninstall; when it is omitted, Olikub checks `APP_BIN`
+(or the file name) on `PATH`.
+
+Apps with `APP_DEFAULT=1` are installed by `install.sh`. Everything else is
+available from the Olikub menu. To inspect or manage a single app directly:
+
+```sh
+olikub apps
+olikub apps install lazygit
+olikub apps uninstall lazygit
+```
+
+Uninstall removes programs but keeps user configuration by default.
+
 ## Themes and hotkeys
 
 Open the Olikub app, press Super+Shift+T, or run `olikub theme` in a shell to

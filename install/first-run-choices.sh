@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Only ask for default desktop app choices when running Gnome
-if [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]]; then
-  OPTIONAL_APPS=("1password" "Spotify" "Zoom" "Dropbox")
-  OLIKUB_FIRST_RUN_OPTIONAL_APPS=$(gum choose "${OPTIONAL_APPS[@]}" --no-limit --height 7 --header "Select optional apps")
-  export OLIKUB_FIRST_RUN_OPTIONAL_APPS
-fi
-
 AVAILABLE_LANGUAGES=("Ruby on Rails" "Node.js" "Go" "PHP" "Python" "Elixir" "Rust" "Java")
 SELECTED_LANGUAGES="Python"
 export OLIKUB_FIRST_RUN_LANGUAGES=$(gum choose "${AVAILABLE_LANGUAGES[@]}" --no-limit --selected "$SELECTED_LANGUAGES" --height 10 --header "Select programming languages")
