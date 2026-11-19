@@ -41,7 +41,7 @@ grep -Fx 'user_setting = "keep me"' "$tmp/old-home/.config/btop/btop.conf" >/dev
 fixture="$tmp/fixture"
 mkdir -p "$fixture/themes/tokyo-night" "$fixture/bin/olikub-sub"
 printf '%s\n' 'fixture theme' > "$fixture/themes/tokyo-night/btop.theme"
-for asset in alacritty.toml zellij.kdl neovim.lua gnome.sh tophat.sh vscode.sh; do
+for asset in alacritty.toml zellij.kdl neovim.lua ghostty.sh gnome.sh tophat.sh vscode.sh; do
   : > "$fixture/themes/tokyo-night/$asset"
 done
 printf '%s\n' 'fixture zellij theme' > "$fixture/themes/tokyo-night/zellij.kdl"
