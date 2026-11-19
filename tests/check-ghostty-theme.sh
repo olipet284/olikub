@@ -17,33 +17,34 @@ run() {
     /bin/bash -c 'source "$1/themes/set-ghostty-theme.sh"' _ "$root"
 }
 
+theme_file="$tmp/fresh/.config/ghostty/olikub-theme-override.ghostty"
+
 # Ghostty absent: nothing is written.
 mkdir -p "$tmp/noghostty"
 run "$tmp/noghostty" TokyoNight "$tmp/empty"
-[[ ! -e "$tmp/noghostty/.config/ghostty/config" ]]
+[[ ! -e "$tmp/noghostty/.config/ghostty/olikub-theme-override.ghostty" ]]
 
-# Fresh config gets the theme.
+# Fresh setup writes the theme to olikub's own override file.
 mkdir -p "$tmp/fresh"
 run "$tmp/fresh" TokyoNight "$tmp/bin:/usr/bin:/bin"
-grep -Fx 'theme = TokyoNight' "$tmp/fresh/.config/ghostty/config" >/dev/null
+grep -Fx 'theme = TokyoNight' "$theme_file" >/dev/null
 
-# An existing theme line is replaced; other settings are preserved.
-mkdir -p "$tmp/existing/.config/ghostty"
+# The user's own ghostty config is never touched.
+mkdir -p "$tmp/untouched/.config/ghostty"
 printf '%s\n' \
   'window-decoration = false' \
   'theme = Catppuccin Macchiato' \
   'confirm-close-surface = false' \
-  > "$tmp/existing/.config/ghostty/config"
-run "$tmp/existing" 'Everforest Dark Hard' "$tmp/bin:/usr/bin:/bin"
-grep -Fx 'theme = Everforest Dark Hard' "$tmp/existing/.config/ghostty/config" >/dev/null
-grep -Fx 'window-decoration = false' "$tmp/existing/.config/ghostty/config" >/dev/null
-grep -Fx 'confirm-close-surface = false' "$tmp/existing/.config/ghostty/config" >/dev/null
+  > "$tmp/untouched/.config/ghostty/config"
+run "$tmp/untouched" 'Everforest Dark Hard' "$tmp/bin:/usr/bin:/bin"
+grep -Fx 'window-decoration = false' "$tmp/untouched/.config/ghostty/config" >/dev/null
+grep -Fx 'theme = Catppuccin Macchiato' "$tmp/untouched/.config/ghostty/config" >/dev/null
 
-# A config without a theme line gets one appended.
-mkdir -p "$tmp/append/.config/ghostty"
-printf '%s\n' 'window-decoration = false' > "$tmp/append/.config/ghostty/config"
-run "$tmp/append" Nord "$tmp/bin:/usr/bin:/bin"
-grep -Fx 'theme = Nord' "$tmp/append/.config/ghostty/config" >/dev/null
-grep -Fx 'window-decoration = false' "$tmp/append/.config/ghostty/config" >/dev/null
+# A stale override file is replaced rather than appended to.
+mkdir -p "$tmp/stale/.config/ghostty"
+printf '%s\n' 'theme = Catppuccin Macchiato' > "$tmp/stale/.config/ghostty/olikub-theme-override.ghostty"
+run "$tmp/stale" Nord "$tmp/bin:/usr/bin:/bin"
+grep -Fx 'theme = Nord' "$tmp/stale/.config/ghostty/olikub-theme-override.ghostty" >/dev/null
+[[ "$(wc -l < "$tmp/stale/.config/ghostty/olikub-theme-override.ghostty")" -eq 1 ]]
 
 echo 'Ghostty theme checks passed.'
