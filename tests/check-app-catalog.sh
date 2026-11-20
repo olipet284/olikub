@@ -57,9 +57,16 @@ uninstall_candidates="$(apps_candidates uninstall | basenames | sort | tr '\n' '
 [[ "$install_candidates" == 'missing-app optional-app ' ]]
 [[ "$uninstall_candidates" == 'installed-app ' ]]
 
-groups="$(apps_groups install)"
-grep -Fx $'cli/fake\tCLI / Fake\t1' <<<"$groups" >/dev/null
-grep -Fx $'gui/fake\tGUI / Fake\t1' <<<"$groups" >/dev/null
+kinds="$(apps_kinds install)"
+grep -Fx $'cli\tCLI\t1' <<<"$kinds" >/dev/null
+grep -Fx $'gui\tGUI\t1' <<<"$kinds" >/dev/null
+
+# One kind gets a bare category label; several kinds get a kind prefix so
+# same-named topics stay distinct.
+grep -Fx $'cli/fake\tFake\t1' <<<"$(apps_categories install cli)" >/dev/null
+multi="$(apps_categories install cli gui)"
+grep -Fx $'cli/fake\tCLI / Fake\t1' <<<"$multi" >/dev/null
+grep -Fx $'gui/fake\tGUI / Fake\t1' <<<"$multi" >/dev/null
 if apps_candidates uninstall | grep -q missing-app; then
   printf 'installed filtering failed\n' >&2
   exit 1
@@ -81,20 +88,29 @@ OLIKUB_APPS_ASSUME_YES=1 apps_apply uninstall "$fixture/apps/cli/fake/installed-
 [[ "$(<"$log")" == 'uninstall installed-app' ]]
 [[ ! -f "$markers/installed-app" ]]
 
-# The two-level menu only shows installable apps and maps the chosen display
-# back to the right app file.
+# The three-level menu shows only installable apps, filters by the chosen
+# types and categories, and maps each chosen display back to its app file.
 mockbin="$tmp/mockbin"
 mkdir -p "$mockbin"
 cat > "$mockbin/gum" <<'GUM'
 #!/usr/bin/env bash
 case "$*" in
-  *"Install application"*)
-    printf '%s\n' 'CLI / Fake (1)'
+  *"Select app types to install"*)
+    printf '%s\n' 'CLI (1)' 'GUI (1)'
+    ;;
+  *"Select categories to install"*)
+    printf '%s\n' 'CLI / Fake (1)' 'GUI / Fake (1)'
     ;;
   *"Select CLI / Fake apps to install"*)
     printf '%s\n' 'Missing App — Not on the system'
     ;;
-  confirm*) exit 0 ;;
+  *"Select GUI / Fake apps to install"*)
+    printf '%s\n' 'Optional App — Only from the menu'
+    ;;
+  confirm*)
+    printf 'confirm\n' >> "${CONFIRM_LOG:?}"
+    exit 0
+    ;;
   style*) exit 0 ;;
   *) exit 1 ;;
 esac
@@ -103,9 +119,52 @@ chmod +x "$mockbin/gum"
 rm -f "$markers/missing-app"
 touch "$markers/installed-app"
 : > "$log"
+: > "$tmp/confirms.log"
 OLIKUB_PATH="$fixture" APPS_DIR="$fixture/apps" PATH="$mockbin:$PATH" \
+  CONFIRM_LOG="$tmp/confirms.log" \
   bash -c 'source "$1/lib/apps.sh"; apps_menu install' bash "$root"
-[[ "$(<"$log")" == 'install missing-app' ]]
+[[ "$(<"$log")" == $'install missing-app\ninstall optional-app' ]]
+# One confirmation covers the whole cross-category batch.
+[[ "$(wc -l < "$tmp/confirms.log")" == 1 ]]
+
+# Cancelling or going back at the categories step returns to the types step
+# without installing anything.
+backbin="$tmp/backbin"
+mkdir -p "$backbin"
+cat > "$backbin/gum" <<'GUM'
+#!/usr/bin/env bash
+step_file="${STEP_FILE:?}"
+step="$(cat "$step_file")"
+case "$*" in
+  *"Select app types to install"*)
+    if [[ "$step" == 0 ]]; then
+      printf '1\n' > "$step_file"
+      printf '%s\n' 'CLI (1)'
+    else
+      printf '%s\n' '<< Back'
+    fi
+    ;;
+  *"Select categories to install"*)
+    printf '%s\n' '<< Back'
+    ;;
+  confirm*)
+    printf 'confirm\n' >> "${CONFIRM_LOG:?}"
+    exit 0
+    ;;
+  style*) exit 0 ;;
+  *) exit 1 ;;
+esac
+GUM
+chmod +x "$backbin/gum"
+rm -f "$markers/missing-app"
+: > "$log"
+: > "$tmp/confirms.log"
+printf '0\n' > "$tmp/step"
+OLIKUB_PATH="$fixture" APPS_DIR="$fixture/apps" PATH="$backbin:$PATH" \
+  STEP_FILE="$tmp/step" CONFIRM_LOG="$tmp/confirms.log" \
+  bash -c 'source "$1/lib/apps.sh"; apps_menu install' bash "$root"
+[[ ! -s "$log" ]]
+[[ ! -s "$tmp/confirms.log" ]]
 
 # Status output must report the same detection used by the menus.
 [[ "$(olikub_apps_status | awk '$3 == "installed-app" { print $4 }')" == installed ]]
