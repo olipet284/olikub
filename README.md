@@ -64,7 +64,28 @@ in place.
 ## Themes and hotkeys
 
 Open the Olikub app, press Super+Shift+T, or run `olikub theme` in a shell to
-choose a theme. Btop uses the
+choose a theme. Applying a theme also applies its generated Ubuntu wallpaper.
+
+Each theme can hold several wallpapers in `themes/<theme>/wallpapers/`. They are
+cycled in filename order with `Super+Ctrl+Space` (`olikub wallpaper next`), and
+the cycle starts over with the Ubuntu wallpaper. Add images by dropping files
+into the directory; no registration is needed. Cycling does not persist across
+theme changes: switching a theme starts on its Ubuntu wallpaper.
+
+The Ubuntu wallpaper is generated from
+`themes/assets/ubuntu-wallpaper.svg.template` using the colors in
+`themes/<theme>/theme.conf`. Preview or regenerate one for any theme with:
+
+```sh
+olikub wallpaper generate tokyo-night
+olikub wallpaper generate all
+```
+
+Existing installations keep their current hotkeys file. Re-run
+`install/desktop/set-gnome-hotkeys.sh` (or the installer) to pick up the
+wallpaper shortcut.
+
+Btop uses the
 stable `olikub` theme name; changing palettes replaces
 `~/.config/btop/themes/olikub.theme` without rewriting the rest of
 `~/.config/btop/btop.conf`. On upgrade, Olikub migrates an existing regular
