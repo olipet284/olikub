@@ -35,7 +35,8 @@ git worktree add ../olikub-feature -b feat/my-change main
 
 Optional applications live in `apps/<kind>/<topic>/<app>.sh`, where `kind` is
 `cli`, `tui`, or `gui`, and `topic` groups apps by use (`coding-harness`,
-`browser`, `multiplexer`, ...). Each app file defines `APP_NAME`,
+`browser`, `multiplexer`, ...). Interactive coding harnesses (`claude`, `codex`,
+`opencode`, ...) are `tui` or `gui` apps, never `cli`. Each app file defines `APP_NAME`,
 `APP_DESCRIPTION`, `APP_DEFAULT`, and the functions `app_installed`,
 `app_install`, and `app_uninstall`. `app_installed` decides whether the app
 appears under Install or Uninstall; when it is omitted, Olikub checks `APP_BIN`
