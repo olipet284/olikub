@@ -1,5 +1,7 @@
 # Olikub
 
+<img src="launchers/icons/Olikub.png" alt="Olikub logo" width="128">
+
 Olikub is my Omakase (chef's choice) setup, based on DHH's [Omakub](https://github.com/basecamp/omakub), with my own customizations and tweaks. To install it on a fresh Ubuntu 26.04+ system, run:
 
 ```sh
