@@ -2,7 +2,7 @@
 
 source "$OLIKUB_PATH/defaults/bash/functions"
 
-AVAILABLE_WEB_APPS=("Chat GPT" "Google Photos" "Google Contacts" "Tailscale")
+AVAILABLE_WEB_APPS=("Chat GPT" "Messenger" "Google Photos" "Google Contacts" "Tailscale")
 apps=$(gum choose "${AVAILABLE_WEB_APPS[@]}" --no-limit --height 6 --header "Select web apps")
 
 if [[ -n "$apps" ]]; then
@@ -12,6 +12,10 @@ if [[ -n "$apps" ]]; then
     "Chat GPT")
       web2app 'Chat GPT' https://chatgpt.com/ https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/chatgpt.png
       app2folder 'Chat GPT.desktop' WebApps
+      ;;
+    "Messenger")
+      web2app 'Messenger' https://www.messenger.com/ https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/facebook-messenger.png
+      app2folder 'Messenger.desktop' WebApps
       ;;
     "Google Photos")
       web2app 'Google Photos' https://photos.google.com/ https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/google-photos.png
