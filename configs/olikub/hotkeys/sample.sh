@@ -3,6 +3,7 @@ add_custom_keybinding 'Ulauncher' 'sh -c "pgrep -x ulauncher && { ulauncher-togg
 add_custom_keybinding 'Flameshot' 'sh -c -- "flameshot gui"' '<Control>Print'
 add_custom_keybinding 'New Ghostty Window' 'ghostty' '<Super>Return'
 add_custom_keybinding 'Choose Olikub Theme' 'ghostty -e bash -ic "olikub theme"' '<Shift><Super>t'
+add_custom_keybinding 'Next Wallpaper' 'olikub wallpaper next' '<Control><Super>space'
 add_custom_keybinding 'Lock Screen' 'loginctl lock-session' '<Control><Super>l'
 add_custom_keybinding 'New Firefox Window' 'firefox --new-window' '<Shift><Super>b'
 add_custom_keybinding 'New Brave Window' 'sh -c -- "if command -v brave-browser >/dev/null 2>&1; then exec brave-browser --new-window; elif command -v brave >/dev/null 2>&1; then exec brave --new-window; else exec flatpak run com.brave.Browser --new-window; fi"' '<Shift><Super><Alt>b'
