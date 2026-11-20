@@ -41,6 +41,11 @@ Optional applications live in `apps/<kind>/<topic>/<app>.sh`, where `kind` is
 appears under Install or Uninstall; when it is omitted, Olikub checks `APP_BIN`
 (or the file name) on `PATH`.
 
+The Install and Uninstall menus are split. Each asks for the app types first
+(`CLI`, `TUI`, `GUI`), then the categories within those types, then the apps.
+You can select several types and categories at once, and one confirmation
+covers the whole batch. Recipes stay available from the types step.
+
 Apps with `APP_DEFAULT=1` are installed by `install.sh`. Everything else is
 available from the Olikub menu. To inspect or manage a single app directly:
 
@@ -50,7 +55,11 @@ olikub apps install lazygit
 olikub apps uninstall lazygit
 ```
 
-Uninstall removes programs but keeps user configuration by default.
+Uninstall removes programs but keeps user configuration by default. Apps built
+from a Git checkout are cloned to
+`${XDG_DATA_HOME:-$HOME/.local/share}/olikub/apps/<app>`; uninstall removes the
+command but leaves the checkout and its local data (such as git-user profiles)
+in place.
 
 ## Themes and hotkeys
 

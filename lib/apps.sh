@@ -81,6 +81,36 @@ remove_local_binary() {
   fi
 }
 
+remove_user_binary() {
+  local label="$1" path="$2"
+  if [[ -f "$path" || -L "$path" ]]; then
+    rm -f -- "$path"
+  else
+    echo "$label is not linked at $path; leaving it in place."
+  fi
+}
+
+# Managed location for apps that are installed from a Git checkout. User data
+# such as git-user profiles lives here, beside the checkout, and is preserved
+# by uninstall.
+olikub_apps_data_dir() {
+  printf '%s\n' "${XDG_DATA_HOME:-$HOME/.local/share}/olikub/apps"
+}
+
+# Clone (or fast-forward) a managed app checkout and print its path. The caller
+# decides what to run inside it.
+olikub_app_clone() {
+  local id="$1" url="$2" dir
+  dir="$(olikub_apps_data_dir)/$id"
+  if [[ -d "$dir/.git" ]]; then
+    git -C "$dir" pull --ff-only >&2 || return 1
+  else
+    mkdir -p "$(dirname "$dir")" || return 1
+    git clone "$url" "$dir" >&2 || return 1
+  fi
+  printf '%s\n' "$dir"
+}
+
 app_files() {
   local kind
   for kind in "${APP_KINDS[@]}"; do
@@ -209,8 +239,37 @@ apps_files_in_group() {
   return 0
 }
 
-apps_groups() {
-  local mode="$1" file kind topic key
+# Print the kinds (cli, tui, gui) that have candidates in the given mode, in
+# catalog order. Emits kind, label, count.
+apps_kinds() {
+  local mode="$1" file kind
+  local -A seen=() count=()
+  local -a order=()
+
+  while IFS= read -r file; do
+    app_path_parts "$file"
+    kind="$APP_KIND"
+    [[ -n "${seen[$kind]:-}" ]] || order+=("$kind")
+    seen["$kind"]=1
+    count["$kind"]=$(( ${count[$kind]:-0} + 1 ))
+  done < <(apps_candidates "$mode")
+
+  for kind in "${order[@]}"; do
+    printf '%s\t%s\t%s\n' "$kind" "$(app_kind_label "$kind")" "${count[$kind]}"
+  done
+}
+
+# Print the categories (kind/topic) available within the requested kinds.
+# Emits kind/topic, label, count. The label carries the kind prefix only when
+# several kinds are requested, so same-named topics stay distinguishable.
+apps_categories() {
+  local mode="$1"
+  shift
+  local -a kinds=("$@")
+  local multi=0
+  ((${#kinds[@]} > 1)) && multi=1
+
+  local file kind topic key want label k
   local -A seen=() count=()
   local -a order=()
 
@@ -218,6 +277,11 @@ apps_groups() {
     app_path_parts "$file"
     kind="$APP_KIND"
     topic="$APP_TOPIC"
+    want=0
+    for k in "${kinds[@]}"; do
+      [[ "$k" == "$kind" ]] && want=1
+    done
+    ((want)) || continue
     key="$kind/$topic"
     [[ -n "${seen[$key]:-}" ]] || order+=("$key")
     seen["$key"]=1
@@ -225,7 +289,14 @@ apps_groups() {
   done < <(apps_candidates "$mode")
 
   for key in "${order[@]}"; do
-    printf '%s\t%s\t%s\n' "$key" "$(app_group_label "$key")" "${count[$key]}"
+    kind="${key%%/*}"
+    topic="${key#*/}"
+    if ((multi)); then
+      label="$(app_kind_label "$kind") / $(app_topic_label "$topic")"
+    else
+      label="$(app_topic_label "$topic")"
+    fi
+    printf '%s\t%s\t%s\n' "$key" "$label" "${count[$key]}"
   done
 }
 
@@ -275,7 +346,9 @@ apps_apply() {
   done
 }
 
-apps_menu_group() {
+# Let the user choose apps from one category and print the chosen file paths.
+# Returns 1 when the chooser is cancelled, so callers can step back.
+apps_choose_in_group() {
   local mode="$1" group="$2" file meta id name description display prefix line
   local -a displays=()
   local -A display_file=()
@@ -306,19 +379,16 @@ apps_menu_group() {
   fi
   [[ -z "$output" ]] && return 0
 
-  local -a chosen=()
   while IFS= read -r line; do
     [[ -z "$line" ]] && continue
     # Displays may carry a description after the em dash; match the app part.
     if [[ -n "${display_file[$line]:-}" ]]; then
-      chosen+=("${display_file[$line]}")
+      printf '%s\n' "${display_file[$line]}"
       continue
     fi
     prefix="${line%% — *}"
-    [[ -n "${display_file[$prefix]:-}" ]] && chosen+=("${display_file[$prefix]}")
+    [[ -n "${display_file[$prefix]:-}" ]] && printf '%s\n' "${display_file[$prefix]}"
   done <<<"$output"
-
-  apps_apply "$mode" "${chosen[@]}"
 }
 
 apps_recipes() {
@@ -359,34 +429,97 @@ apps_recipes() {
 }
 
 apps_menu() {
-  local mode="$1" choice key label count
-  local -a displays=()
-  local -A display_key=()
+  local mode="$1" choice line
+  local -a kinds=() groups=() files=() kind_menu=() cat_menu=()
+  local -A kind_key=() group_key=()
 
-  while IFS=$'\t' read -r key label count; do
-    displays+=("$label ($count)")
-    display_key["$label ($count)"]="$key"
-  done < <(apps_groups "$mode")
+  while true; do
+    # Types step: pick one or more of cli/tui/gui, or jump to recipes.
+    kinds=()
+    kind_menu=()
+    kind_key=()
+    while IFS=$'\t' read -r key label count; do
+      kind_menu+=("$label ($count)")
+      kind_key["$label ($count)"]="$key"
+    done < <(apps_kinds "$mode")
 
-  if ((${#displays[@]} == 0)); then
-    gum style --foreground 214 "No apps are available to $mode right now."
-    return 0
-  fi
+    if ((${#kind_menu[@]} == 0)); then
+      gum style --foreground 214 "No apps are available to $mode right now."
+      return 0
+    fi
 
-  displays+=("Recipes")
-  displays+=("<< Back")
+    if ! choice="$(gum choose --no-limit "${kind_menu[@]}" "Recipes…" "<< Back" \
+      --height 15 --header "Select app types to $mode")"; then
+      return 0
+    fi
+    [[ -z "$choice" ]] && return 0
 
-  if ! choice="$(gum choose "${displays[@]}" --height 20 --header "$( [[ "$mode" == install ]] && echo "Install application" || echo "Uninstall application")")"; then
-    return 1
-  fi
-  [[ -z "$choice" || "$choice" == "<< Back" ]] && return 0
-  if [[ "$choice" == "Recipes" ]]; then
-    apps_recipes "$mode"
-    return 0
-  fi
+    local saw_back=0 saw_recipes=0
+    while IFS= read -r line; do
+      [[ -z "$line" ]] && continue
+      case "$line" in
+        "<< Back") saw_back=1 ;;
+        "Recipes…") saw_recipes=1 ;;
+        *) [[ -n "${kind_key[$line]:-}" ]] && kinds+=("${kind_key[$line]}") ;;
+      esac
+    done <<<"$choice"
 
-  key="${display_key[$choice]:-}"
-  [[ -n "$key" ]] && apps_menu_group "$mode" "$key"
+    ((saw_back)) && return 0
+    if ((saw_recipes)); then
+      # Recipes run their own interactive flows, so treat them as a leaf.
+      apps_recipes "$mode"
+      return 0
+    fi
+    ((${#kinds[@]})) || continue
+
+    # Categories step: pick one or more categories within the chosen types.
+    while true; do
+      groups=()
+      cat_menu=()
+      group_key=()
+      while IFS=$'\t' read -r key label count; do
+        cat_menu+=("$label ($count)")
+        group_key["$label ($count)"]="$key"
+      done < <(apps_categories "$mode" "${kinds[@]}")
+
+      if ! choice="$(gum choose --no-limit "${cat_menu[@]}" "<< Back" \
+        --height 15 --header "Select categories to $mode")"; then
+        break
+      fi
+      [[ -z "$choice" ]] && break
+
+      saw_back=0
+      while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+        if [[ "$line" == "<< Back" ]]; then
+          saw_back=1
+        else
+          [[ -n "${group_key[$line]:-}" ]] && groups+=("${group_key[$line]}")
+        fi
+      done <<<"$choice"
+      ((saw_back)) && break
+      ((${#groups[@]})) || continue
+
+      # Apps step: choose apps in every chosen category, then confirm once for
+      # the whole batch.
+      files=()
+      local group output cancelled=0
+      for group in "${groups[@]}"; do
+        if ! output="$(apps_choose_in_group "$mode" "$group")"; then
+          cancelled=1
+          break
+        fi
+        while IFS= read -r line; do
+          [[ -n "$line" ]] && files+=("$line")
+        done <<<"$output"
+      done
+      ((cancelled)) && continue
+      ((${#files[@]})) || continue
+
+      apps_apply "$mode" "${files[@]}"
+      return 0
+    done
+  done
 }
 
 olikub_apps_install_defaults() {
