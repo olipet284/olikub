@@ -1,0 +1,109 @@
+# Olikub Yazi theme: kanagawa
+# Generated from the Olikub kanagawa palette; applied by `olikub theme`.
+
+[app]
+overall = { bg = "#1f1f28" }
+
+[mgr]
+cwd = { fg = "#7e9cd8" }
+find_keyword = { fg = "#c0a36e", bold = true }
+find_position = { fg = "#957fb8" }
+symlink_target = { fg = "#6a9589" }
+marker_copied = { fg = "#1f1f28", bg = "#76946a" }
+marker_cut = { fg = "#1f1f28", bg = "#c34043" }
+marker_marked = { fg = "#1f1f28", bg = "#c0a36e" }
+marker_selected = { fg = "#1f1f28", bg = "#7e9cd8" }
+count_copied = { fg = "#1f1f28", bg = "#76946a" }
+count_cut = { fg = "#1f1f28", bg = "#c34043" }
+count_selected = { fg = "#1f1f28", bg = "#7e9cd8" }
+border_symbol = "│"
+border_style = { fg = "#2a2a37" }
+
+[indicator]
+parent = { fg = "#2a2a37" }
+current = { fg = "#7e9cd8" }
+preview = { fg = "#c0a36e" }
+padding = { open = "█", close = "█" }
+
+[tabs]
+active = { fg = "#1f1f28", bg = "#7e9cd8", bold = true }
+inactive = { fg = "#dcd7ba", bg = "#2a2a37" }
+sep_inner = { open = "█", close = "█" }
+
+[mode]
+normal_main = { fg = "#1f1f28", bg = "#7e9cd8", bold = true }
+normal_alt = { fg = "#7e9cd8", bg = "#2a2a37" }
+select_main = { fg = "#1f1f28", bg = "#957fb8", bold = true }
+select_alt = { fg = "#957fb8", bg = "#2a2a37" }
+unset_main = { fg = "#1f1f28", bg = "#c34043", bold = true }
+unset_alt = { fg = "#c34043", bg = "#2a2a37" }
+
+[status]
+overall = { fg = "#dcd7ba", bg = "#2a2a37" }
+perm_type = { fg = "#7e9cd8" }
+perm_read = { fg = "#76946a" }
+perm_write = { fg = "#c0a36e" }
+perm_exec = { fg = "#c34043" }
+perm_sep = { fg = "#363646" }
+progress_label = { fg = "#1f1f28", bg = "#dcd7ba", bold = true }
+progress_normal = { fg = "#1f1f28", bg = "#7e9cd8" }
+progress_error = { fg = "#1f1f28", bg = "#c34043" }
+
+[which]
+border = { fg = "#2a2a37" }
+mask = { bg = "#2a2a37" }
+cand = { fg = "#6a9589" }
+rest = { fg = "#dcd7ba" }
+desc = { fg = "#957fb8" }
+separator = " -> "
+separator_style = { fg = "#363646" }
+
+[confirm]
+border = { fg = "#2a2a37" }
+title = { fg = "#7e9cd8" }
+body = { fg = "#dcd7ba" }
+list = { fg = "#dcd7ba" }
+btn_yes = { fg = "#1f1f28", bg = "#7e9cd8", bold = true }
+btn_no = { fg = "#1f1f28", bg = "#c34043" }
+
+[notify]
+title_info = { fg = "#6a9589" }
+title_warn = { fg = "#c0a36e" }
+title_error = { fg = "#c34043" }
+
+[pick]
+border = { fg = "#2a2a37" }
+active = { fg = "#1f1f28", bg = "#7e9cd8", bold = true }
+inactive = { fg = "#dcd7ba" }
+
+[input]
+border = { fg = "#2a2a37" }
+title = { fg = "#7e9cd8" }
+value = { fg = "#dcd7ba" }
+selected = { fg = "#1f1f28", bg = "#7e9cd8" }
+
+[cmp]
+border = { fg = "#2a2a37" }
+active = { fg = "#1f1f28", bg = "#7e9cd8", bold = true }
+inactive = { fg = "#dcd7ba" }
+
+[tasks]
+border = { fg = "#2a2a37" }
+title = { fg = "#7e9cd8" }
+hovered = { fg = "#1f1f28", bg = "#7e9cd8" }
+
+[help]
+border = { fg = "#2a2a37" }
+chord = { fg = "#6a9589" }
+action = { fg = "#dcd7ba" }
+hovered = { fg = "#1f1f28", bg = "#7e9cd8" }
+
+[filetype]
+rules = [
+	{ mime = "image/*", fg = "#957fb8" },
+	{ mime = "{audio,video}/*", fg = "#c0a36e" },
+	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,deb,rpm}", fg = "#c34043" },
+	{ mime = "inode/empty", fg = "#6a9589" },
+	{ url = "*", is = "orphan", fg = "#c34043" },
+	{ url = "*/", fg = "#7e9cd8" },
+]

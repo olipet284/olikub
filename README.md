@@ -95,6 +95,12 @@ stable `olikub` theme name; changing palettes replaces
 Btop config from an Olikub theme name to `olikub`; config symlinks are left
 alone.
 
+Yazi follows the active theme as well: when `~/.config/yazi` exists,
+`olikub theme` writes `theme.toml` from `themes/<theme>/yazi-theme.toml`. This
+styles Yazi's interface; code-preview syntax colors keep Yazi's built-in theme.
+Installing Yazi seeds `~/.config/yazi/yazi.toml` once and applies the active
+theme.
+
 GNOME custom shortcuts are loaded from
 `${XDG_CONFIG_HOME:-$HOME/.config}/olikub/hotkeys/*.sh`. Olikub creates a sample
 file if the directory is missing and leaves existing user directories alone.

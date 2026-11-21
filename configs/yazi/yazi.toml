@@ -1,0 +1,8 @@
+# Olikub Yazi defaults.
+#
+# The active Olikub theme is written to theme.toml by `olikub theme`; this file
+# holds the non-theme defaults. Olikub only seeds it on install, so edit it
+# freely.
+
+[mgr]
+show_hidden = true

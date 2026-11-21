@@ -28,6 +28,10 @@ if [ -n "$THEME" ] && [ "$THEME" != "<<-back" ]; then
     cp "$OLIKUB_PATH/themes/$THEME/btop.theme" "$HOME/.config/btop/themes/olikub.theme"
   fi
 
+  if [ -d "$HOME/.config/yazi" ]; then
+    copy_theme_file "$OLIKUB_PATH/themes/$THEME/yazi-theme.toml" "$HOME/.config/yazi/theme.toml" || exit 1
+  fi
+
   source "$OLIKUB_PATH/themes/$THEME/ghostty.sh"
   source "$OLIKUB_PATH/themes/$THEME/gnome.sh"
   source "$OLIKUB_PATH/themes/$THEME/tophat.sh"
