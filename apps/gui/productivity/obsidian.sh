@@ -16,6 +16,10 @@ app_install() {
   sudo apt-get install -y ./obsidian.deb
   rm obsidian.deb
   cd -
+
+  # Seed the default Olikub theme into any vaults that already exist.
+  OLIKUB_OBSIDIAN_CSS="$OLIKUB_PATH/themes/tokyo-night/obsidian.css" \
+    source "$OLIKUB_PATH/themes/set-obsidian-theme.sh"
 }
 
 app_uninstall() {
