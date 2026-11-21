@@ -1,0 +1,99 @@
+/* Olikub Theme for Obsidian */
+
+.theme-dark, .theme-light {
+  /* Core colors */
+  --background-primary: @BACKGROUND@;
+  --background-primary-alt: @BACKGROUND@;
+  --background-secondary: @BACKGROUND@;
+  --background-secondary-alt: @BACKGROUND@;
+  --text-normal: @FOREGROUND@;
+
+  /* Selection colors */
+  --text-selection: @SELECTION@;
+
+  /* Border color */
+  --background-modifier-border: @COLOR8@;
+
+  /* Semantic heading colors */
+  --text-title-h1: @COLOR1@;
+  --text-title-h2: @COLOR2@;
+  --text-title-h3: @COLOR3@;
+  --text-title-h4: @COLOR4@;
+  --text-title-h5: @COLOR5@;
+  --text-title-h6: @COLOR6@;
+
+  /* Links and accents */
+  --text-link: @COLOR4@;
+  --text-accent: @ACCENT@;
+  --text-accent-hover: @ACCENT@;
+  --interactive-accent: @ACCENT@;
+  --interactive-accent-hover: @ACCENT@;
+
+  /* Muted text */
+  --text-muted: color-mix(in srgb, @FOREGROUND@ 70%, transparent);
+  --text-faint: color-mix(in srgb, @FOREGROUND@ 55%, transparent);
+
+  /* Code */
+  --code-normal: @COLOR6@;
+
+  /* Errors and success */
+  --text-error: @COLOR1@;
+  --text-error-hover: @COLOR1@;
+  --text-success: @COLOR2@;
+
+  /* Tags */
+  --tag-color: @COLOR6@;
+  --tag-background: @COLOR8@;
+
+  /* Graph */
+  --graph-line: @COLOR8@;
+  --graph-node: @ACCENT@;
+  --graph-node-focused: @COLOR4@;
+  --graph-node-tag: @COLOR6@;
+  --graph-node-attachment: @COLOR2@;
+}
+
+/* Headers */
+.cm-header-1, .markdown-rendered h1 { color: var(--text-title-h1); }
+.cm-header-2, .markdown-rendered h2 { color: var(--text-title-h2); }
+.cm-header-3, .markdown-rendered h3 { color: var(--text-title-h3); }
+.cm-header-4, .markdown-rendered h4 { color: var(--text-title-h4); }
+.cm-header-5, .markdown-rendered h5 { color: var(--text-title-h5); }
+.cm-header-6, .markdown-rendered h6 { color: var(--text-title-h6); }
+
+/* Code blocks */
+.markdown-rendered code {
+  color: @COLOR6@;
+}
+
+/* Syntax highlighting */
+.cm-s-obsidian span.cm-keyword { color: @COLOR1@; }
+.cm-s-obsidian span.cm-string { color: @COLOR2@; }
+.cm-s-obsidian span.cm-number { color: @COLOR3@; }
+.cm-s-obsidian span.cm-comment { color: @COLOR8@; }
+.cm-s-obsidian span.cm-operator { color: @COLOR4@; }
+.cm-s-obsidian span.cm-def { color: @COLOR4@; }
+
+/* Links */
+.markdown-rendered a {
+  color: var(--text-link);
+}
+
+/* Blockquotes */
+.markdown-rendered blockquote {
+  border-left-color: @ACCENT@;
+}
+
+/* Active elements */
+.workspace-leaf.mod-active .workspace-leaf-header-title {
+  color: var(--interactive-accent);
+}
+
+.nav-file-title.is-active {
+  color: var(--interactive-accent);
+}
+
+/* Search results */
+.search-result-file-title {
+  color: var(--interactive-accent);
+}

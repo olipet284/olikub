@@ -101,6 +101,17 @@ styles Yazi's interface; code-preview syntax colors keep Yazi's built-in theme.
 Installing Yazi seeds `~/.config/yazi/yazi.toml` once and applies the active
 theme.
 
+Obsidian follows the Olikub theme through a single theme named `Olikub`. Each
+switch copies the active theme's CSS to
+`${XDG_STATE_HOME:-$HOME/.local/state}/olikub/obsidian/` and links that
+directory into every vault at `.obsidian/themes/Olikub`, so the theme is defined
+once and shared. Vaults are read from `~/.config/obsidian/obsidian.json`; list
+extra vaults, one path per line, in `~/.config/olikub/obsidian-vaults`. Olikub
+also points each vault's appearance at the theme, so no manual selection is
+needed. If Obsidian is running when the theme changes, pick `Olikub` once under
+Appearance > Themes, since Obsidian would otherwise overwrite the setting on
+exit.
+
 GNOME custom shortcuts are loaded from
 `${XDG_CONFIG_HOME:-$HOME/.config}/olikub/hotkeys/*.sh`. Olikub creates a sample
 file if the directory is missing and leaves existing user directories alone.
