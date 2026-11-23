@@ -101,6 +101,13 @@ styles Yazi's interface; code-preview syntax colors keep Yazi's built-in theme.
 Installing Yazi seeds `~/.config/yazi/yazi.toml` once and applies the active
 theme.
 
+Herdr keeps its whole configuration in one file and has no config include, so
+`olikub theme` rewrites the block below the `# --- olikub theme ---` marker in
+`~/.config/herdr/config.toml` and leaves everything above it alone. A theme with
+a matching herdr built-in uses it; the rest fall back to `terminal`, which
+follows the Ghostty palette. The result is applied with
+`herdr server reload-config`.
+
 Obsidian follows the Olikub theme through a single theme named `Olikub`. Each
 switch copies the active theme's CSS to
 `${XDG_STATE_HOME:-$HOME/.local/state}/olikub/obsidian/` and links that
