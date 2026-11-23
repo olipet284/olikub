@@ -6,13 +6,13 @@ APP_DEFAULT=0
 APP_BIN=herdr
 
 app_installed() {
-  has_command herdr || mise_manages_command herdr
+  [[ -x "$HOME/.local/bin/herdr" ]] || has_command herdr
 }
 
 app_install() {
-  mise use -g herdr
+  curl -fsSL https://herdr.dev/install.sh | sh
 }
 
 app_uninstall() {
-  mise unuse -g herdr 2>/dev/null || true
+  remove_user_binary "$APP_NAME" "$HOME/.local/bin/herdr"
 }
