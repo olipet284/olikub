@@ -33,6 +33,7 @@ if [ -n "$THEME" ] && [ "$THEME" != "<<-back" ]; then
   fi
 
   source "$OLIKUB_PATH/themes/$THEME/ghostty.sh"
+  source "$OLIKUB_PATH/themes/$THEME/herdr.sh"
   source "$OLIKUB_PATH/themes/$THEME/gnome.sh"
   source "$OLIKUB_PATH/themes/$THEME/tophat.sh"
   source "$OLIKUB_PATH/themes/$THEME/vscode.sh"
